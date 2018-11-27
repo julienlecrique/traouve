@@ -28,8 +28,8 @@ class CategoryFixtures extends Fixture
 
         $toy = new Category();
         $toy->setLabel('Jouets');
-        $toy->setColor('yellow');
-        $toy->setIcon('fa-chess');
+        $toy->setColor('black');
+        $toy->setIcon('fa-gamepad');
         $manager->persist($toy);
         $this->addReference('category-3', $toy);
 
@@ -43,14 +43,14 @@ class CategoryFixtures extends Fixture
         $electronic = new Category();
         $electronic->setLabel('Electroniques');
         $electronic->setColor('grey');
-        $electronic->setIcon('fa-electronic');
+        $electronic->setIcon('fa-camera');
         $manager->persist($electronic);
         $this->addReference('category-5', $electronic);
 
         $clothe = new Category();
         $clothe->setLabel('Vêtements');
         $clothe->setColor('orange');
-        $clothe->setIcon('fa-tshirt');
+        $clothe->setIcon('fa-shirtsinbulk');
         $manager->persist($clothe);
         $this->addReference('category-6', $clothe);
 

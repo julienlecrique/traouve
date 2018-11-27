@@ -44,3 +44,11 @@ répondre à celle-ci :
 2. Fichier MWB de la base de données
 3. Diagrammes UML
 4. Code source PHP / HTML / CSS
+
+``` shell
+npm install
+npm run dev
+composer install
+php bin/console doctrine:schema:create
+php bin/console doctrine:fixtures:load
+```

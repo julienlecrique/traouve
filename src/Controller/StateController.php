@@ -14,6 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class StateController extends AbstractController
 {
+
+    const FOUND = "Trouvé";
+    const LOST = "Perdu";
+
     /**
      * @Route("/", name="state_index", methods="GET")
      */

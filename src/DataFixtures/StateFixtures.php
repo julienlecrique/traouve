@@ -11,23 +11,23 @@ class StateFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $find = new State();
-        $find->setLabel('Trouvé');
+        $find->setLabel('trouve');
         $find->setColor('blue');
         $manager->persist($find);
         $this->setReference('state-found', $find);
 
 
         $lost = new State();
-        $lost->setLabel('Perdu');
+        $lost->setLabel('perdu');
         $lost->setColor('red');
         $manager->persist($lost);
         $this->setReference('state-lost', $lost);
 
         $found = new State();
-        $found->setLabel('Rendu');
+        $found->setLabel('rendu');
         $found->setColor('green');
         $manager->persist($found);
-        $this->setReference('state-found', $found);
+        $this->setReference('state-giv', $found);
 
         $manager->flush();
     }
