@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\County;
+use App\Entity\State;
+use App\Entity\Traobject;
 use App\Form\CountyType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +56,22 @@ class CountyController extends AbstractController
      */
     public function show(County $county): Response
     {
-        return $this->render('county/show.html.twig', ['county' => $county]);
+        $traobjects = $this->getDoctrine()->getRepository(Traobject::class)->findBy(["county" => $county]);
+
+        return $this->render('county/show.html.twig', ['county' => $county, 'traobjects' => $traobjects]);
+    }
+
+    /**
+     * @Route("/stats/", name="county_stats", methods="GET")
+     */
+    public function stats(County $county): Response
+    {
+        $lost= $this->getDoctrine()->getRepository(State::class)->findOneBy(['label'=>State::LOST]);
+        $traobjects = $this->getDoctrine()->getRepository(Traobject::class)->findByState($lost);
+        $counties = $this->getDoctrine()->getRepository(County::class)->findAllWithCounty();
+
+        return $this->render('county/stats.html.twig', ['traobjects' => $traobjects,
+            "counties" => $counties]);
     }
 
     /**
@@ -98,4 +115,6 @@ class CountyController extends AbstractController
         return $this->render('county/countylist.html.twig', ['counties' => $counties]);
 
     }
+
+
 }

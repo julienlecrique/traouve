@@ -1,58 +1,94 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Traobject{% endblock %}
+{% block title %}{{ traobject.state.label }} {{ traobject.category.label }} {% endblock %}
 
 {% block body %}
-    <h1>Traobject</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ traobject.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ traobject.title }}</td>
-            </tr>
-            <tr>
-                <th>Picture</th>
-                <td>{{ traobject.picture }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ traobject.description }}</td>
-            </tr>
-            <tr>
-                <th>EventAt</th>
-                <td>{{ traobject.eventAt ? traobject.eventAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DateEnd</th>
-                <td>{{ traobject.dateEnd ? traobject.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>City</th>
-                <td>{{ traobject.city }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ traobject.address }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ traobject.createdAt ? traobject.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ traobject.updatedAt ? traobject.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container mt-5">
+        <div class="card object-card">
+            <h1 class="card-header">
+                <span class="badge badge-primary badge-found">
+                    <i class="fa fa-map-pin"></i>
+                    {{ traobject.state.label }}
+                </span>
+                {{ traobject.title }}
+            </h1>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5 mt-5">
+                        {% if traobject.picture %}
+                            <img style="width: 350px; height: 350px" class="card-img-top" src="{{ asset('uploads/' ~ traobject.picture) }}" alt=" {{ traobject.category.label }}">
+                        {% else %}
+                            <div class="card-logo-top" style="background-color: {{ traobject.category.color }};">
+                                <i class="fa {{ traobject.category.icon }}"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-5 box box2 m-5 pt-3">
+                    <h4 class="pl-0 mt-1 border rounded text-center border-dark" style="background-color: #dddddd">{{ traobject.user.firstname }} {{ traobject.user.lastname }}</h4>
+                        <img class="col-md-4 mt-5 ml-5" style="width: 310px" src="{{ asset('uploads/' ~ traobject.user.picture) }}" alt="">
 
-    <a href="{{ path('traobject_index') }}">back to list</a>
+                        <div class="evenboxinner">
+                        <p class="" style="font-family: 'Bangers', cursive;">{{ traobject.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <ul class="object-features">
+                    <li><a href="#" class="badge" style="background-color: {{ traobject.category.color }};"><i class="fa {{ traobject.category.icon }}"></i>
+                            {{ traobject.category.label }}</a></li>
+                    <li><a href="#" class="badge badge-info"><i class="fa fa-calendar"></i> {{ traobject.createdAt|date('d/m/Y') }}</a></li>
+                    <li><a href="#" class="badge badge-info"><i class="fa fa-map-marker"></i> {{ traobject.city }}</a></li>
+                </ul>
+            </footer>
+        </div>
 
-    <a href="{{ path('traobject_edit', {'id': traobject.id}) }}">edit</a>
+        <hr>
 
-    {{ include('traobject/_delete_form.html.twig') }}
+        <h3>Commentaires</h3>
+        {% for comment in comments  %}
+
+        <ul class="list-unstyled">
+            <li class="media mb-1">
+                {% if comment.user.picture %}
+                <img class="mr-3 img-thumbnail" style="width: 90px" src="{{ asset('uploads/' ~ comment.user.picture) }}" alt="{{ comment.user.lastname }}">
+                {% else %}
+                    <i class="fa fa-user fa-5x mr-4 pl-3"></i>
+                    {% endif %}
+                <div class="media-body  pl-4 border-top mt-2">
+                    <h5 class="mt-2 mb-1">{{ comment.user }}</h5>
+                    <p>Posté le {{ comment.createdAt|date('d-m-Y') }}</p>
+                    <p>{{ comment.content }}</p>
+                </div>
+            </li>
+        </ul>
+        {% endfor %}
+
+
+        {% if app.user %}
+            <h4>Laissez un commentaire</h4>
+            {{  render(controller('App\\Controller\\CommentController:new', {'id' : traobject.id }))}}
+
+        {% else %}
+
+            <div class="alert alert-secondary" role="alert">
+                <p>Veuillez vous connecter afin de pouvoir laisser un commentaire</p>
+                <a href="{{ path('app_login') }}" class="btn btn-primary">
+                    <i class="fa fa-sign-in"></i>
+                    Me connecter
+                </a>
+                <a class="btn btn-primary ml-3" href="{{ path('user_registration') }}">
+                    <i class="fa fa-user-plus"></i>
+                    Créer un compte
+                </a>
+            </div>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="ml-4 d-flex flex-row justify-content-around btn-group-lg mt-5">
+            <a class="btn btn-lg btn-primary fa fa-edit" href="{{ path('traobject_edit', {'id': traobject.id}) }}">  Modifier l'objet</a>
+            <a href="">{{ include('traobject/_delete_form.html.twig') }}</a>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

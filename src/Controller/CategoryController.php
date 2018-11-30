@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\State;
+use App\Entity\Traobject;
 use App\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +56,9 @@ class CategoryController extends AbstractController
      */
     public function show(Category $category): Response
     {
-        return $this->render('category/show.html.twig', ['category' => $category]);
+        $traobjects = $this->getDoctrine()->getRepository(Traobject::class)->findBy(["category" => $category]);
+
+        return $this->render('category/show.html.twig', ['category' => $category, 'traobjects' => $traobjects]);
     }
 
     /**
@@ -96,6 +100,17 @@ class CategoryController extends AbstractController
         $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
 
         return $this->render('category/dropdown.html.twig', ['categories' => $categories]);
+
+    }
+
+    public function traobjectByCatByState()
+    {
+        $lost = $this->getDoctrine()->getRepository(State::class)->findOneBy(['label'=>State::LOST]);
+        $find = $this->getDoctrine()->getRepository(State::class)->findOneBy(['label'=>State::FIND]);
+        $traobjectsLost = $this->getDoctrine()->getRepository(Traobject::class)->findTraobjectByCat('', $lost, 6);
+        $traobjectsFound =$this->getDoctrine()->getRepository(Traobject::class)->findTraobjectByCat('' , $find, 6);
+
+        return $this->render('default/homepage.html.twig', ['traobjectsLost' => $traobjectsLost, 'traobjectsFound' => $traobjectsFound ]);
 
     }
 }

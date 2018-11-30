@@ -1,0 +1,87 @@
+easy_admin:
+  site_name: '<img src="https://d28htnjz2elwuj.cloudfront.net/wp-content/uploads/2017/01/09122540/fire-flame-rgb-red.png "/>Traouvé <a class="btn btn-primary" href="../"> >>  Retour au site</a>'
+  entities:
+    Category:
+      class: App\Entity\Category
+      new:
+        title: 'Add New Category'
+      edit:
+        title: 'Edit Category'
+    Comment:
+      class: App\Entity\Comment
+      new:
+        title: 'Add New Comment'
+      edit:
+        title: 'Edit Comment'
+    County:
+      class: App\Entity\County
+      new:
+        title: 'Add New County'
+      edit:
+        title: 'Edit County'
+    State:
+      class: App\Entity\State
+      new:
+        title: 'Add New State'
+      edit:
+        title: 'Edit State'
+    Utilisateur:
+      class: App\Entity\User
+      list:
+        fields:
+        - { property: 'id', type: 'int' }
+        - { property: 'firstname', type: 'text' }
+        - { property: 'lastname', type: 'text' }
+        - { property: 'email', type: 'text' }
+        - { property: 'phone', type: 'text' }
+        - { property: 'picture', type: 'image', base_path: '%app.path.uploads_dir%' }
+
+        show:
+          fields:
+          - { property: 'firstname', type: 'text' }
+          - { property: 'lastname', type: 'text' }
+          - { property: 'email', type: 'text' }
+          - { property: 'phone', type: 'text' }
+          - { property: 'picture', type: 'image', base_path: '%app.path.uploads_dir%' }
+          form:
+            fields:
+            - { property: 'pictureFile', type: 'vich_image' }
+
+
+      new:
+        title: 'Ajouter un utilisateur'
+      edit:
+        title: 'Modifier utilisateur'
+    Traobject:
+      class: App\Entity\Traobject
+      list:
+        fields:
+        - { property: 'id', type: 'int' }
+        - { property: 'title', type: 'text' }
+        - { property: 'picture', type: 'image', base_path: '%app.path.uploads_dir%' }
+        - { property: 'event_at', type: 'datetime' }
+        - { property: 'city', type: 'text' }
+
+        show:
+          fields:
+          - { property: 'title', type: 'text' }
+          - { property: 'picture', type: 'image', base_path: '%app.path.uploads_dir%' }
+          - { property: 'event_at', type: 'datetime' }
+          - { property: 'city', type: 'text' }
+        form:
+          fields:
+          - { property: 'pictureFile', type: 'vich_image' }
+      new:
+        title: 'Add New Traobject'
+      edit:
+        title: 'Edit Traobject'
+
+
+  design:
+    assets:
+      favicon: '../assets/images/favicon.png'
+      css:
+      - 'bundles/easyadmin/bootstrap-all.css'
+      js:
+      - 'bundles/easyadmin/bootstrap-all.js'
+    brand_color: '#3b658f'

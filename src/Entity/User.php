@@ -4,12 +4,18 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * User
  *
+ * @property  roles
  * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="email_UNIQUE", columns={"email"})})
  * @ORM\Entity
+ * @Vich\Uploadable
  */
 class User implements UserInterface
 {
@@ -21,6 +27,11 @@ class User implements UserInterface
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
 
     /**
      * @var string
@@ -63,6 +74,12 @@ class User implements UserInterface
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
      */
     private $picture;
+
+    /**
+     * @Vich\UploadableField(mapping="traobject_image", fileNameProperty="picture")
+     * @var File
+     */
+    private $pictureFile;
 
     public function getId(): ?int
     {
@@ -129,16 +146,43 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getPicture(): ?string
     {
         return $this->picture;
     }
 
-    public function setPicture(?string $picture): self
+    /**
+     * @param null|string $picture
+     * @return User
+     */
+    public function setPicture(?string $picture): User
     {
         $this->picture = $picture;
 
         return $this;
+    }
+
+    /**
+     * @return null|File
+     */
+    public function getPictureFile(): ?File
+    {
+        return $this->pictureFile;
+    }
+
+    /**
+     * @param File|null $picture
+     */
+    public function setPictureFile(File $picture = null)
+    {
+        $this->pictureFile = $picture;
+
+        if ($picture) {
+            $this->updatedAt = new \DateTime('now');
+        }
     }
 
 
@@ -187,4 +231,32 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function __toString()
+    {
+        return $this->getLastname();
+    }
+
 }

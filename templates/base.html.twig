@@ -24,14 +24,43 @@
         </h5>
         <nav class="my-2 my-md-0 mr-md-3">
             <a class="p-2 text-dark" href="{{ path('homepage') }}">Accueil</a>
-            <a class="p-2 text-dark" href="form.html">Déposer une annonce</a>
-            <a class="p-2 text-dark" href="list-lost.html">Objets perdus</a>
-            <a class="p-2 text-dark" href="list-found.html">Objets trouvés</a>
+            {% if app.user %}
+            <a class="p-2 text-dark" href="{{ path('traobject_new') }}">Déposer une annonce</a>
+            {% endif %}
+            <a class="p-2 text-dark" href="{{ path('traobject_lost') }}">Objets perdus</a>
+            <a class="p-2 text-dark" href="{{ path('traobject_find') }}">Objets trouvés</a>
         </nav>
-        <a class="btn btn-outline-primary" href="register.html">
+        {% if is_granted('ROLE_ADMIN') %}
+
+                <a href="{{ path('admin') }}" class="btn btn-success mr-3">Interface d'administration</a>
+
+        {% endif %}
+        {% if app.user %}
+            <a href="{{ path('user_show', {'id': app.user.id}) }}">
+                <span class="btn btn-primary">
+                    {% if app.user.picture %}
+                    <img class="border-left border-right mr-2 rounded" style="width: 20px" src="{{ asset('uploads/' ~ app.user.picture) }}" alt="">
+                    {% else %}
+                    <i class="fa fa-user"></i>
+                    {% endif %}
+                    {{ app.user.firstname }}   {{ app.user.lastname }}
+                </span>
+            </a>
+            <a class="btn btn-primary ml-3" href="{{ path('app_logout') }}">
+                <i class="fa fa-lock"></i>
+                Se déconnecter
+            </a>
+        {%  else %}
+        <a class="btn btn-outline-primary" href="{{ path('app_login') }}">
+            <i class="fa fa-user-circle  mr-2"></i>
+            Se connecter
+        </a>
+        <a class="btn btn-primary ml-3" href="{{ path('user_registration') }}">
             <i class="fa fa-user-plus"></i>
             Créer un compte
         </a>
+        {% endif %}
+
     </div>
         </header>
 {% endblock %}
@@ -62,7 +91,7 @@
             <div class="col-6 col-md">
                 <h5>Catégories</h5>
 
-                    {{  render(controller('App\\Controller\\CategoryController::dropdown')) }}
+                {{  render(controller('App\\Controller\\CategoryController::dropdown')) }}
 
             </div>
             <div class="col-6 col-md">
@@ -73,6 +102,7 @@
             <div class="col-6 col-md">
                 <h5>Notre entreprise</h5>
                 <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">Statistiques</a></li>
                     <li><a class="text-muted" href="#">Equipe</a></li>
                     <li><a class="text-muted" href="#">Contact</a></li>
                     <li><a class="text-muted" href="#">Mentions légales</a></li>

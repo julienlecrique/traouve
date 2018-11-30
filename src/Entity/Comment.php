@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="comment", indexes={@ORM\Index(name="fk_comment_user1_idx", columns={"user_id"}), @ORM\Index(name="fk_comment_traobject1_idx", columns={"traobject_id"})})
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comment
 {
@@ -106,6 +107,21 @@ class Comment
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+
+
+    public function __toString()
+    {
+        return $this->getContent();
     }
 
 

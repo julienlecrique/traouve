@@ -21,8 +21,8 @@ class DefaultController extends AbstractController
     {
         $lost = $this->getDoctrine()->getRepository(State::class)->findOneBy(['label'=>State::LOST]);
         $find = $this->getDoctrine()->getRepository(State::class)->findOneBy(['label'=>State::FIND]);
-        $traobjectsLost = $this->getDoctrine()->getRepository(Traobject::class)->findLastTraobjectByState($lost, 6);
-        $traobjectsFound =$this->getDoctrine()->getRepository(Traobject::class)->findLastTraobjectByState($find, 6);
+        $traobjectsLost = $this->getDoctrine()->getRepository(Traobject::class)->findLastTraobjectByState($lost, 8);
+        $traobjectsFound =$this->getDoctrine()->getRepository(Traobject::class)->findLastTraobjectByState($find, 8);
 
         return $this->render('default/homepage.html.twig', ['traobjectsLost' => $traobjectsLost, 'traobjectsFound' => $traobjectsFound ]);
     }

@@ -1,11 +1,10 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}New Traobject{% endblock %}
-
+{% block title %}Nouvelle annonce{% endblock %}
 {% block body %}
-    <h1>Create new Traobject</h1>
+    <div class="container mt-2">
+    <h1  class="rounded text-center" style="color: #EB6864"><i class="fa fa-th-list mr-2"></i>Créer une nouvelle annonce</h1>
 
     {{ include('traobject/_form.html.twig') }}
 
-    <a href="{{ path('traobject_index') }}">back to list</a>
+    </div>
 {% endblock %}

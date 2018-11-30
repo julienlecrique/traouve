@@ -23,11 +23,6 @@ class StateFixtures extends Fixture
         $manager->persist($lost);
         $this->setReference('state-lost', $lost);
 
-        $found = new State();
-        $found->setLabel('rendu');
-        $found->setColor('green');
-        $manager->persist($found);
-        $this->setReference('state-giv', $found);
 
         $manager->flush();
     }

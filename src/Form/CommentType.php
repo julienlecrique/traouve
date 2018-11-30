@@ -12,10 +12,7 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content')
-            ->add('createdAt')
-            ->add('traobject')
-            ->add('user')
+            ->add('content', null, array('label' => 'Soyez Courtois'))
         ;
     }
 

@@ -28,7 +28,7 @@ class CategoryFixtures extends Fixture
 
         $toy = new Category();
         $toy->setLabel('Jouets');
-        $toy->setColor('black');
+        $toy->setColor('orange');
         $toy->setIcon('fa-gamepad');
         $manager->persist($toy);
         $this->addReference('category-3', $toy);
