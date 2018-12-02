@@ -1,6 +1,10 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    <canvas id="myChart" width="50" height="10"></canvas>
+    <div class="container">
+        <div class="row">
+    <canvas class="col-md-6" id="myChart" width="40" height="70"></canvas>
+    </div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
@@ -38,13 +42,7 @@
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
+
             }
         });
     </script>

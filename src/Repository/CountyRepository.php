@@ -29,7 +29,7 @@ class CountyRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c');
 
         $qb->select('c.label, COUNT(t.id) AS nb')
-            ->leftJoin('c.traobjects', 'traobjects')
+            ->leftJoin('c.traobjects', 't')
             ->groupBy('c.id');
 
         return $qb->getQuery()->getResult();

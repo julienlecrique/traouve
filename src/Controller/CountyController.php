@@ -52,19 +52,9 @@ class CountyController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="county_show", methods="GET")
+     * @Route("/stats", name="county_stats", methods="GET")
      */
-    public function show(County $county): Response
-    {
-        $traobjects = $this->getDoctrine()->getRepository(Traobject::class)->findBy(["county" => $county]);
-
-        return $this->render('county/show.html.twig', ['county' => $county, 'traobjects' => $traobjects]);
-    }
-
-    /**
-     * @Route("/stats/", name="county_stats", methods="GET")
-     */
-    public function stats(County $county): Response
+    public function stats(): Response
     {
         $lost= $this->getDoctrine()->getRepository(State::class)->findOneBy(['label'=>State::LOST]);
         $traobjects = $this->getDoctrine()->getRepository(Traobject::class)->findByState($lost);
@@ -72,6 +62,16 @@ class CountyController extends AbstractController
 
         return $this->render('county/stats.html.twig', ['traobjects' => $traobjects,
             "counties" => $counties]);
+    }
+
+    /**
+     * @Route("/{id}", name="county_show", methods="GET")
+     */
+    public function show(County $county): Response
+    {
+        $traobjects = $this->getDoctrine()->getRepository(Traobject::class)->findBy(["county" => $county]);
+
+        return $this->render('county/show.html.twig', ['county' => $county, 'traobjects' => $traobjects]);
     }
 
     /**
